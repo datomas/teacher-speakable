@@ -10,17 +10,17 @@ const dashRoutes = [
     component: Dashboard
   },
   {
-    path: "/user-page",
+    path: "/dashboard/user-page",
     name: "User Profile",
     icon: "nc-icon nc-single-02",
     component: UserPage
   },
   {
-    path: "/schedule",
+    path: "/dashboard/schedule",
     name: "Schedule",
     icon: "nc-icon nc-single-02",
     component: Schedule
   },
-  { redirect: true, path: "/", pathTo: "/dashboard", name: "Dashboard" }
+  { redirect: true, path: "/dashboard", pathTo: "/dashboard", name: "Dashboard" }
 ];
 export default dashRoutes;
