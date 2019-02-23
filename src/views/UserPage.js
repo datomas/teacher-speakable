@@ -1,9 +1,9 @@
 import React from "react";
 import { Card, CardHeader, CardBody, CardTitle, CardFooter, Row, Col } from "reactstrap";
 
-import CardAuthor from "components/CardElements/CardAuthor.jsx";
-import FormInputs from "components/FormInputs/FormInputs.jsx";
-import Button from "components/CustomButton/CustomButton.jsx";
+import CardAuthor from "components/CardAuthor.js";
+import FormInputs from "components/FormInputs.js";
+import Button from "components/CustomButton.js";
 
 import damirBosnjak from "assets/img/damir-bosnjak.jpg";
 import mike from "assets/img/mike.jpg";
@@ -29,9 +29,9 @@ class User extends React.Component {
                   description="@chetfaker"
                 />
                 <p className="description text-center">
-                  "I like the way you work it{" "}<br/>
-                    No diggity <br/>
-                    I wanna bag it up"
+                  "I like the way you work it{" "}<br />
+                  No diggity <br />
+                  I wanna bag it up"
                 </p>
               </CardBody>
               <CardFooter>
@@ -41,21 +41,21 @@ class User extends React.Component {
                     <Col xs={6} sm={6} md={6} lg={3} className="ml-auto">
                       <h5>
                         12
-                        <br/>
+                        <br />
                         <small>Files</small>
                       </h5>
                     </Col>
                     <Col xs={6} sm={6} md={6} lg={4} className="mr-auto ml-auto">
                       <h5>
                         2GB
-                        <br/>
+                        <br />
                         <small>Used</small>
                       </h5>
                     </Col>
                     <Col lg={3} className="mr-auto">
                       <h5>
                         24,6$
-                        <br/>
+                        <br />
                         <small>Spent</small>
                       </h5>
                     </Col>
@@ -81,7 +81,7 @@ class User extends React.Component {
                         <br />
                         <span className="text-muted">
                           <small>
-                          Offline
+                            Offline
                         </small>
                         </span>
                       </Col>
@@ -104,7 +104,7 @@ class User extends React.Component {
                         <br />
                         <span className="text-success">
                           <small>
-                          Available
+                            Available
                         </small>
                         </span>
                       </Col>
@@ -127,7 +127,7 @@ class User extends React.Component {
                         <br />
                         <span className="text-danger">
                           <small>
-                          Busy
+                            Busy
                         </small>
                         </span>
                       </Col>

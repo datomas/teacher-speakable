@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 
-import Button from "components/CustomButton/CustomButton.jsx";
+import Button from "components/CustomButton.js";
 
 class FixedPlugin extends Component {
   constructor(props) {

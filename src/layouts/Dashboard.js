@@ -3,9 +3,9 @@ import React from "react";
 import PerfectScrollbar from "perfect-scrollbar";
 import { Route, Switch, Redirect } from "react-router-dom";
 
-import Header from "components/Header/Header.jsx";
-import Footer from "components/Footer/Footer.jsx";
-import Sidebar from "components/Sidebar/Sidebar.jsx";
+import Header from "components/Header.js";
+import Footer from "components/Footer.js";
+import Sidebar from "components/Sidebar.js";
 
 import dashboardRoutes from "routes/dashboard.js";
 
