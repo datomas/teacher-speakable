@@ -1,5 +1,8 @@
-.rbc-calendar { 
-  height: 600px !important; 
+@import './schedule.scss';
+
+html, body, .wrapper {
+  height: 100% !important;
+  width: 100% !important;
 }
 
 .closed {

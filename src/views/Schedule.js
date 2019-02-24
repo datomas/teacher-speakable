@@ -80,24 +80,26 @@ class Schedule extends Component {
     const { events, userType } = this.state;
     return (
       <div className="content">
-        <select value={userType} onChange={this.handleUserTypeChange}>
-          <option value="teacher">Teacher</option>
-          <option value="student">Student</option>
-        </select>
-        <br />
-        <br />
-        <BigCalendar
-          selectable
-          localizer={localizer}
-          events={events}
-          defaultView={BigCalendar.Views.WEEK}
-          defaultDate={new Date()}
-          onSelectSlot={this.handleEventSelectSlot}
-          onSelectEvent={this.handleEventSelectEvent}
-          eventPropGetter={event => ({
-            className: event.status
-          })}
-        />
+        <div className="calendar-container">
+          <select value={userType} onChange={this.handleUserTypeChange}>
+            <option value="teacher">Teacher</option>
+            <option value="student">Student</option>
+          </select>
+          <br />
+          <br />
+          <BigCalendar
+            selectable
+            localizer={localizer}
+            events={events}
+            defaultView={BigCalendar.Views.WEEK}
+            defaultDate={new Date()}
+            onSelectSlot={this.handleEventSelectSlot}
+            onSelectEvent={this.handleEventSelectEvent}
+            eventPropGetter={event => ({
+              className: event.status
+            })}
+          />
+        </div>
       </div>
     );
   }
