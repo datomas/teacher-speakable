@@ -125,9 +125,18 @@ class Schedule extends Component {
         <Modal isOpen={isModalAddScheduleShown} toggle={this.toggleAddSchedule}>
           <ModalHeader toggle={this.toggle}>Modal title</ModalHeader>
           <ModalBody>
-            <input type="text" />
-            <input type="text" />
-            <input type="text" />
+            <div className="form-group">
+              <label htmlFor="usr">Title:</label>
+              <input type="text" className="form-control" id="usr" />
+            </div>
+            <div className="form-group">
+              <label htmlFor="usr">Start Time:</label>
+              <input type="text" className="form-control" id="usr" />
+            </div>
+            <div className="form-group">
+              <label htmlFor="usr">End Time:</label>
+              <input type="text" className="form-control" id="usr" />
+            </div>
           </ModalBody>
           <ModalFooter>
             <Button color="primary" onClick={this.toggleAddSchedule}>
