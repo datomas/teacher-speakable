@@ -3,6 +3,7 @@ import { connect } from "react-redux";
 import BigCalendar from "react-big-calendar";
 import moment from "moment";
 import "react-big-calendar/lib/css/react-big-calendar.css";
+import Swal from "sweetalert2";
 
 const localizer = BigCalendar.momentLocalizer(moment);
 
@@ -47,7 +48,7 @@ class Schedule extends Component {
     console.log(userType, "event");
 
     if (userType === "student") {
-      alert("class booked!");
+      Swal.fire("Hooray", "class booked!", "success");
     }
   };
 
@@ -70,8 +71,10 @@ class Schedule extends Component {
       return;
     }
 
-    alert(
-      "not a class for this sched yet. contact administrator for a clss request"
+    Swal.fire(
+      "Ooops",
+      "not a class for this sched yet. contact administrator for a clss request",
+      "warning"
     );
   };
 
