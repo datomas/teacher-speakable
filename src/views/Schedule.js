@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
+import { Button, Modal, ModalHeader, ModalBody, ModalFooter } from "reactstrap";
 import BigCalendar from "react-big-calendar";
 import moment from "moment";
 import "react-big-calendar/lib/css/react-big-calendar.css";
@@ -10,6 +11,8 @@ const localizer = BigCalendar.momentLocalizer(moment);
 class Schedule extends Component {
   state = {
     userType: "teacher",
+    isModalAddScheduleShown: false,
+    addScheduleForm: {},
     events: [
       {
         id: 8,
@@ -48,7 +51,17 @@ class Schedule extends Component {
     console.log(userType, "event");
 
     if (userType === "student") {
-      Swal.fire("Hooray", "class booked!", "success");
+      Swal.fire({
+        title: "Book Class",
+        text: "Are you sure you wanna book this class?",
+        type: "warning",
+        showCancelButton: true,
+        confirmButtonText: "Yes"
+      }).then(res => {
+        if (res.value) {
+          Swal.fire("Booked!", "You've been booked to this class", "success");
+        }
+      });
     }
   };
 
@@ -57,14 +70,14 @@ class Schedule extends Component {
     const { userType, events } = this.state;
     console.log(userType, "type");
     if (userType === "teacher" || userType === "admin") {
-      const title = window.prompt("New Event name");
+      this.toggleAddSchedule();
       this.setState({
         events: [
           ...events,
           {
             start,
             end,
-            title
+            title: "title"
           }
         ]
       });
@@ -78,9 +91,15 @@ class Schedule extends Component {
     );
   };
 
+  toggleAddSchedule = () => {
+    this.setState({
+      isModalAddScheduleShown: !this.state.isModalAddScheduleShown
+    });
+  };
+
   render() {
     console.log(this.props);
-    const { events, userType } = this.state;
+    const { events, userType, isModalAddScheduleShown } = this.state;
     return (
       <div className="content">
         <div className="calendar-container">
@@ -103,6 +122,22 @@ class Schedule extends Component {
             })}
           />
         </div>
+        <Modal isOpen={isModalAddScheduleShown} toggle={this.toggleAddSchedule}>
+          <ModalHeader toggle={this.toggle}>Modal title</ModalHeader>
+          <ModalBody>
+            <input type="text" />
+            <input type="text" />
+            <input type="text" />
+          </ModalBody>
+          <ModalFooter>
+            <Button color="primary" onClick={this.toggleAddSchedule}>
+              Do Something
+            </Button>{" "}
+            <Button color="secondary" onClick={this.toggleAddSchedule}>
+              Cancel
+            </Button>
+          </ModalFooter>
+        </Modal>
       </div>
     );
   }
