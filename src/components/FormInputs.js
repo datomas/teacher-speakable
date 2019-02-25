@@ -44,8 +44,8 @@ class FieldGroup extends React.Component {
               {addonLeft}
             </InputGroupAddon>
           ) : (
-            ""
-          )}
+              ""
+            )}
           <Input
             {...inputProps}
             onFocus={e => this.setState({ focus: true })}
@@ -56,8 +56,8 @@ class FieldGroup extends React.Component {
               {addonRight}
             </InputGroupAddon>
           ) : (
-            ""
-          )}
+              ""
+            )}
         </InputGroup>
       );
     return inputProps.type === "radio" || inputProps.type === "checkbox" ? (
@@ -72,11 +72,11 @@ class FieldGroup extends React.Component {
         </Label>
       </FormGroup>
     ) : (
-      <FormGroup {...formGroupProps}>
-        {label ? <Label {...labelProps}>{label}</Label> : ""}
-        <Input {...inputProps} />
-      </FormGroup>
-    );
+        <FormGroup {...formGroupProps}>
+          {label ? <Label {...labelProps}>{label}</Label> : ""}
+          <Input {...inputProps} />
+        </FormGroup>
+      );
   }
 }
 
