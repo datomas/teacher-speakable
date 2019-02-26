@@ -1,12 +1,12 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import { Button, Modal, ModalHeader, ModalBody, ModalFooter } from "reactstrap";
 import BigCalendar from "react-big-calendar";
 import moment from "moment";
 import "react-big-calendar/lib/css/react-big-calendar.css";
 import Swal from "sweetalert2";
 
 import AddScheduleModal from "../components/Schedule/AddScheduleModal";
+import ScheduleDetailsModal from "../components/Schedule/ScheduleDetailsModal";
 
 const localizer = BigCalendar.momentLocalizer(moment);
 
@@ -15,7 +15,6 @@ class Schedule extends Component {
     userType: "teacher",
     isModalAddScheduleShown: false,
     isScheduleDetailsShown: false,
-    scheduleForm: {},
     activeSchedule: {},
     startTime: null,
     endTime: null,
@@ -108,9 +107,8 @@ class Schedule extends Component {
     );
   };
 
-  addNewSchedule = () => {
-    const { startTime, endTime, events, scheduleForm } = this.state;
-    const { title, start, end } = scheduleForm;
+  addNewSchedule = ({ title, start, end }) => {
+    const { startTime, endTime, events } = this.state;
     this.setState(
       {
         events: [
@@ -177,31 +175,11 @@ class Schedule extends Component {
           toggle={this.toggleAddSchedule}
           addSchedule={this.addNewSchedule}
         />
-        <Modal isOpen={isScheduleDetailsShown} toggle={this.toggleAddSchedule}>
-          <ModalHeader toggle={this.toggleAddSchedule}>Modal title</ModalHeader>
-          <ModalBody>
-            <p>
-              <strong>Title</strong>
-            </p>
-            <p> {activeSchedule.title} </p>
-            <p>
-              <strong>Start Time</strong>
-            </p>
-            <p> {moment(activeSchedule.start).format("MM-YYYY")} </p>
-            <p>
-              <strong>End Time</strong>
-            </p>
-            <p> {moment(activeSchedule.end).format("MM-YYYY")} </p>
-          </ModalBody>
-          <ModalFooter>
-            <Button color="danger" onClick={this.addNewSchedule}>
-              Delete
-            </Button>{" "}
-            <Button color="secondary" onClick={this.toggleScheduleDetails}>
-              Close
-            </Button>
-          </ModalFooter>
-        </Modal>
+        <ScheduleDetailsModal
+          isShown={isScheduleDetailsShown}
+          toggle={this.toggleScheduleDetails}
+          schedule={activeSchedule}
+        />
       </div>
     );
   }
