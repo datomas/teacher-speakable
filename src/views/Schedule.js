@@ -6,13 +6,19 @@ import moment from "moment";
 import "react-big-calendar/lib/css/react-big-calendar.css";
 import Swal from "sweetalert2";
 
+import AddScheduleModal from "../components/Schedule/AddScheduleModal";
+
 const localizer = BigCalendar.momentLocalizer(moment);
 
 class Schedule extends Component {
   state = {
     userType: "teacher",
     isModalAddScheduleShown: false,
-    addScheduleForm: {},
+    isScheduleDetailsShown: false,
+    scheduleForm: {},
+    activeSchedule: {},
+    startTime: null,
+    endTime: null,
     events: [
       {
         id: 8,
@@ -50,6 +56,19 @@ class Schedule extends Component {
     const { userType } = this.state;
     console.log(userType, "event");
 
+    if (userType === "teacher") {
+      this.setState(
+        {
+          activeSchedule: event
+        },
+        () => {
+          console.log(this.state, "STATE");
+          this.toggleScheduleDetails();
+          return;
+        }
+      );
+    }
+
     if (userType === "student") {
       Swal.fire({
         title: "Book Class",
@@ -70,17 +89,15 @@ class Schedule extends Component {
     const { userType, events } = this.state;
     console.log(userType, "type");
     if (userType === "teacher" || userType === "admin") {
-      this.toggleAddSchedule();
-      this.setState({
-        events: [
-          ...events,
-          {
-            start,
-            end,
-            title: "title"
-          }
-        ]
-      });
+      this.setState(
+        {
+          startTime: start,
+          endTime: end
+        },
+        () => {
+          this.toggleAddSchedule();
+        }
+      );
       return;
     }
 
@@ -91,15 +108,48 @@ class Schedule extends Component {
     );
   };
 
+  addNewSchedule = () => {
+    const { startTime, endTime, events, scheduleForm } = this.state;
+    const { title, start, end } = scheduleForm;
+    this.setState(
+      {
+        events: [
+          ...events,
+          {
+            start: startTime,
+            end: endTime,
+            title
+          }
+        ]
+      },
+      () => {
+        this.toggleAddSchedule();
+      }
+    );
+  };
+
   toggleAddSchedule = () => {
     this.setState({
       isModalAddScheduleShown: !this.state.isModalAddScheduleShown
     });
   };
 
+  toggleScheduleDetails = () => {
+    console.log("toggle sched");
+    this.setState({
+      isScheduleDetailsShown: !this.state.isScheduleDetailsShown
+    });
+  };
+
   render() {
     console.log(this.props);
-    const { events, userType, isModalAddScheduleShown } = this.state;
+    const {
+      events,
+      userType,
+      activeSchedule,
+      isModalAddScheduleShown,
+      isScheduleDetailsShown
+    } = this.state;
     return (
       <div className="content">
         <div className="calendar-container">
@@ -122,28 +172,33 @@ class Schedule extends Component {
             })}
           />
         </div>
-        <Modal isOpen={isModalAddScheduleShown} toggle={this.toggleAddSchedule}>
-          <ModalHeader toggle={this.toggle}>Modal title</ModalHeader>
+        <AddScheduleModal
+          isShown={isModalAddScheduleShown}
+          toggle={this.toggleAddSchedule}
+          addSchedule={this.addNewSchedule}
+        />
+        <Modal isOpen={isScheduleDetailsShown} toggle={this.toggleAddSchedule}>
+          <ModalHeader toggle={this.toggleAddSchedule}>Modal title</ModalHeader>
           <ModalBody>
-            <div className="form-group">
-              <label htmlFor="usr">Title:</label>
-              <input type="text" className="form-control" id="usr" />
-            </div>
-            <div className="form-group">
-              <label htmlFor="usr">Start Time:</label>
-              <input type="text" className="form-control" id="usr" />
-            </div>
-            <div className="form-group">
-              <label htmlFor="usr">End Time:</label>
-              <input type="text" className="form-control" id="usr" />
-            </div>
+            <p>
+              <strong>Title</strong>
+            </p>
+            <p> {activeSchedule.title} </p>
+            <p>
+              <strong>Start Time</strong>
+            </p>
+            <p> {moment(activeSchedule.start).format("MM-YYYY")} </p>
+            <p>
+              <strong>End Time</strong>
+            </p>
+            <p> {moment(activeSchedule.end).format("MM-YYYY")} </p>
           </ModalBody>
           <ModalFooter>
-            <Button color="primary" onClick={this.toggleAddSchedule}>
-              Do Something
+            <Button color="danger" onClick={this.addNewSchedule}>
+              Delete
             </Button>{" "}
-            <Button color="secondary" onClick={this.toggleAddSchedule}>
-              Cancel
+            <Button color="secondary" onClick={this.toggleScheduleDetails}>
+              Close
             </Button>
           </ModalFooter>
         </Modal>
