@@ -51,7 +51,6 @@ class Login extends Component {
       this.setState({
         isSending: true
       }, async () => {
-        console.log('firing up authenticate...', form)
         const { authenticate } = this.props;
         await authenticate(form);
         this.setState({ isSending: false });

@@ -6,13 +6,12 @@ import { AUTHENTICATE_USER } from '../constants';
 const API = RepositoryFactory.get('auth');
 
 export const authenticate = ({ email, password, rememberMe }) => async (dispatch) => {
-  console.log('authenticating...');
   const { data, success } = await API.login({
     email,
     password
   });
 
-  console.log('response---', data, success)
+  console.log('authentication response---', data, success)
 
   if (!success) return;
 

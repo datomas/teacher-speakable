@@ -3,7 +3,6 @@ import { BASE_URL } from '../../constants/utils';
 
 export default {
   login(form) {
-    console.log('sending out request form repo')
     return axios.post(`${BASE_URL}auth/login?with=entity:[id,name];role:[id,name]`, form);
   }
 }
