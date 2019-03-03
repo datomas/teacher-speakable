@@ -1,12 +1,12 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import {
+  Alert,
   Container,
   Card,
   CardBody,
   CardHeader,
   CardTitle,
-  Row,
   Col,
   Form,
   FormGroup,
@@ -26,6 +26,10 @@ class Login extends Component {
       email: '',
       password: '',
       rememberMe: false
+    },
+    error: {
+      isError: false,
+      message: ''
     }
   }
 
@@ -51,25 +55,32 @@ class Login extends Component {
       this.setState({
         isSending: true
       }, async () => {
-        const { authenticate } = this.props;
-        await authenticate(form);
+        const { authenticate, user } = this.props;
+        const response = await authenticate(form);
         this.setState({ isSending: false });
+        if (!response.success) this.setState({ error: { isError: true, message: response.message } })
       });
     }
   }
-
   render() {
-    const { form, isSending } = this.state;
+    const { form, isSending, error } = this.state;
     return (
       <Container className="d-flex justify-content-center align-items-center">
-        <Col sm="12" md={{ size: 6 }}>
+        <Col sm="12" md={{ size: 6, order: 2 }}>
           <Card className="card-user">
+
             <CardHeader>
-              <CardTitle>Sign In</CardTitle>
+              <Col>
+                <CardTitle>Sign In</CardTitle>
+              </Col>
             </CardHeader>
+
             <CardBody>
               <Form className="form" onSubmit={this.onSubmit}>
                 <Col>
+                  <Alert isOpen={error.isError} color="danger">
+                    <b>Error: </b>{error.message}
+                  </Alert>
                   <FormGroup>
                     <Label for="email">Email </Label>
                     <Input
@@ -109,7 +120,9 @@ class Login extends Component {
                     </Label>
                   </FormGroup>
                 </Col>
-                <Button disabled={isSending} color="primary" round>Submit</Button>
+                <Col>
+                  <Button disabled={isSending} color="primary">Submit</Button>
+                </Col>
               </Form>
             </CardBody>
           </Card>
@@ -119,4 +132,8 @@ class Login extends Component {
   }
 }
 
-export default connect(null, { authenticate })(Login);
+const mapStateToProps = state => ({
+  user: state.user
+});
+
+export default connect(mapStateToProps, { authenticate })(Login);

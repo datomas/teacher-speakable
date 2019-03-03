@@ -11,9 +11,7 @@ export const authenticate = ({ email, password, rememberMe }) => async (dispatch
     password
   });
 
-  console.log('authentication response---', data, success)
-
-  if (!success) return;
+  if (!success) return data; // TODO: better error handling
 
   // if(rememberMe) Cookies.set(TOKEN, data._token, { expires: 7});
   // localStorage.setItem(TOKEN, data._token);
