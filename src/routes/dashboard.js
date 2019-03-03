@@ -18,7 +18,7 @@ const dashRoutes = [
   {
     path: "/dashboard/schedule",
     name: "Schedule",
-    icon: "nc-icon nc-single-02",
+    icon: "nc-icon nc-calendar-60",
     component: Schedule
   },
   { redirect: true, path: "/dashboard", pathTo: "/dashboard", name: "Dashboard" }
