@@ -1,14 +1,23 @@
-import React, { Component, Fragment } from 'react';
+import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import {
+  Container,
+  Card,
+  CardBody,
+  CardHeader,
+  CardTitle,
+  Row,
+  Col,
+  Form,
   FormGroup,
   Label,
   Input,
-  InputGroup,
-  InputGroupAddon
+  Button
+
 } from "reactstrap";
 import { connect } from 'react-redux';
 import { authenticate } from '../store/actions/user';
+import "assets/scss/login.scss";
 
 class Login extends Component {
   state = {
@@ -53,45 +62,60 @@ class Login extends Component {
   render() {
     const { form, isSending } = this.state;
     return (
-      <Fragment>
-        <form
-          className="form-container"
-          onSubmit={this.onSubmit}>
-          <input
-            value={form.email}
-            name="email"
-            type="text"
-            className="form-input"
-            placeholder="Email"
-            onChange={this.inputChange}
-          />
-          <input
-            value={form.password}
-            name="password"
-            type="password"
-            className="form-input"
-            placeholder="Password"
-            onChange={this.inputChange}
-          />
-          <button
-            type="button"
-            className={`form-input form-input__small ${form.rememberMe ? 'form-input__small__active' : ''}`}
-            onClick={() => this.setState({
-              form: {
-                ...form,
-                rememberMe: !form.rememberMe
-              }
-            })}>
-            Remember Me
-          </button>
-          <button
-            type="submit"
-            className={`form-input form-input__button ${isSending ? 'form-input__button__loading' : ''}`}
-            disabled={isSending}>
-            Login
-          </button>
-        </form>
-      </Fragment>
+      <Container className="d-flex justify-content-center align-items-center">
+        <Col sm="12" md={{ size: 6 }}>
+          <Card className="card-user">
+            <CardHeader>
+              <CardTitle>Sign In</CardTitle>
+            </CardHeader>
+            <CardBody>
+              <Form className="form" onSubmit={this.onSubmit}>
+                <Col>
+                  <FormGroup>
+                    <Label for="email">Email </Label>
+                    <Input
+                      value={form.email}
+                      type="email"
+                      name="email"
+                      id="email"
+                      placeholder="Email Address"
+                      onChange={this.inputChange} />
+                  </FormGroup>
+                </Col>
+                <Col>
+                  <FormGroup>
+                    <Label for="password">Password</Label>
+                    <Input
+                      value={form.password}
+                      type="password"
+                      name="password"
+                      id="password"
+                      placeholder="****"
+                      onChange={this.inputChange} />
+                  </FormGroup>
+                </Col>
+                <Col className="remember-me">
+                  <FormGroup>
+                    <Label for="checkbox" check>
+                      <Input
+                        type="checkbox"
+                        name="checkbox"
+                        onClick={() => this.setState({
+                          form: {
+                            ...form,
+                            rememberMe: !form.rememberMe
+                          }
+                        })} />{' '}
+                      Remember Me
+                    </Label>
+                  </FormGroup>
+                </Col>
+                <Button disabled={isSending} color="primary" round>Submit</Button>
+              </Form>
+            </CardBody>
+          </Card>
+        </Col>
+      </Container>
     )
   }
 }
