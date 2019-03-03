@@ -1,0 +1,14 @@
+@import './schedule.scss';
+
+html, body, .wrapper {
+  height: 100% !important;
+  width: 100% !important;
+}
+
+.closed {
+  background-color: red;
+}
+
+.available {
+  background-color: green;
+}
