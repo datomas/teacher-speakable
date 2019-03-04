@@ -1,33 +1,32 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
+import uuid from "uuid/v4";
+import { find, remove } from "lodash";
 import BigCalendar from "react-big-calendar";
 import moment from "moment";
 import "react-big-calendar/lib/css/react-big-calendar.css";
 import Swal from "sweetalert2";
 
-import AddScheduleModal from "../components/Schedule/AddScheduleModal";
 import ScheduleDetailsModal from "../components/Schedule/ScheduleDetailsModal";
 
 const localizer = BigCalendar.momentLocalizer(moment);
-
+const newSchedules = [];
 class Schedule extends Component {
   state = {
     userType: "teacher",
     isModalAddScheduleShown: false,
     isScheduleDetailsShown: false,
     activeSchedule: {},
-    startTime: null,
-    endTime: null,
     events: [
       {
-        id: 8,
+        id: uuid(),
         title: "Meeting",
         start: new Date(2019, 1, 17, 14, 0, 0, 0),
         end: new Date(2019, 1, 17, 15, 0, 0, 0),
         status: "closed"
       },
       {
-        id: 9,
+        id: uuid(),
         title: "Class",
         start: new Date(2019, 1, 18, 17, 0, 0, 0),
         end: new Date(2019, 1, 18, 17, 30, 0, 0),
@@ -35,7 +34,7 @@ class Schedule extends Component {
         status: "closed"
       },
       {
-        id: 10,
+        id: uuid(),
         title: "Class",
         start: new Date(2019, 1, 19, 17, 0, 0, 0),
         end: new Date(2019, 1, 19, 17, 30, 0, 0),
@@ -87,14 +86,29 @@ class Schedule extends Component {
     console.log(start, end, "PARAMS");
     const { userType, events } = this.state;
     console.log(userType, "type");
+    const id = uuid();
     if (userType === "teacher" || userType === "admin") {
       this.setState(
         {
-          startTime: start,
-          endTime: end
+          events: [
+            ...events,
+            {
+              id,
+              start: start,
+              end: end,
+              title: "Class",
+              status: "selected"
+            }
+          ]
         },
         () => {
-          this.toggleAddSchedule();
+          newSchedules.push({
+            id,
+            start: start,
+            end: end,
+            title: "Class",
+            status: "closed"
+          });
         }
       );
       return;
@@ -107,24 +121,20 @@ class Schedule extends Component {
     );
   };
 
-  addNewSchedule = ({ title, start, end }) => {
-    const { startTime, endTime, events } = this.state;
-    this.setState(
-      {
-        events: [
-          ...events,
-          {
-            start: startTime,
-            end: endTime,
-            title
-          }
-        ]
-      },
-      () => {
-        this.toggleAddSchedule();
-      }
-    );
+  addNewSchedules = () => {
+    console.log(newSchedules.length, newSchedules.length < 1, "length");
+    newSchedules.length <= 0
+      ? Swal.fire("Ooops", "No classes selected", "warning")
+      : Swal.fire("Hooray", "Classes are now booked", "success");
   };
+
+  // cancelCLass = (selectedClass) => {
+  //   if (selectedClass.status == 'selected') {
+  //     remove(newSchedules, (schedule) = {
+  //       schedule
+  //     })
+  //   }
+  // }
 
   toggleAddSchedule = () => {
     this.setState({
@@ -145,16 +155,22 @@ class Schedule extends Component {
       events,
       userType,
       activeSchedule,
-      isModalAddScheduleShown,
       isScheduleDetailsShown
     } = this.state;
     return (
       <div className="content">
         <div className="calendar-container">
-          <select value={userType} onChange={this.handleUserTypeChange}>
+          <select
+            value={userType}
+            onChange={this.handleUserTypeChange}
+            className="float-right"
+          >
             <option value="teacher">Teacher</option>
             <option value="student">Student</option>
           </select>
+          <button className="btn btn-primary" onClick={this.addNewSchedules}>
+            Book
+          </button>
           <br />
           <br />
           <BigCalendar
@@ -170,14 +186,10 @@ class Schedule extends Component {
             })}
           />
         </div>
-        <AddScheduleModal
-          isShown={isModalAddScheduleShown}
-          toggle={this.toggleAddSchedule}
-          addSchedule={this.addNewSchedule}
-        />
         <ScheduleDetailsModal
           isShown={isScheduleDetailsShown}
           toggle={this.toggleScheduleDetails}
+          cancelCLass={this.cancelCLass}
           schedule={activeSchedule}
         />
       </div>

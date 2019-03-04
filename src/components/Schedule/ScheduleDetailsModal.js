@@ -23,7 +23,7 @@ function ScheduleDetailsModal(props) {
         <p> {moment(schedule.end).format("MM-YYYY")} </p>
       </ModalBody>
       <ModalFooter>
-        <Button color="danger">Delete</Button>{" "}
+        <Button color="danger">Cancel</Button>{" "}
         <Button color="secondary" onClick={toggle}>
           Close
         </Button>

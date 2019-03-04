@@ -5,10 +5,15 @@ html, body, .wrapper {
   width: 100% !important;
 }
 
+.selected {
+  background-color: #51cbce !important;
+  border: none !important;
+}
+
 .closed {
-  background-color: red;
+  background-color: #ef8157 !important;
 }
 
 .available {
-  background-color: green;
+  background-color: #6bd098 !important;
 }
