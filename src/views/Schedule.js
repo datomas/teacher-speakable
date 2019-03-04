@@ -159,7 +159,6 @@ class Schedule extends Component {
 
   render() {
     console.log(this.props);
-    console.log(this.cancelCLass, "CANCEL");
     const {
       events,
       userType,
