@@ -3,8 +3,9 @@ import { Button, Modal, ModalHeader, ModalBody, ModalFooter } from "reactstrap";
 import moment from "moment";
 
 function ScheduleDetailsModal(props) {
-  const { isShown, toggle, schedule } = props;
-
+  const { isShown, toggle, schedule, cancelClass } = props;
+  console.log(cancelClass, "cancelClass");
+  console.log(toggle, "toggle");
   return (
     <Modal isOpen={isShown} toggle={toggle}>
       <ModalHeader toggle={toggle}>Modal title</ModalHeader>
@@ -23,7 +24,14 @@ function ScheduleDetailsModal(props) {
         <p> {moment(schedule.end).format("MM-YYYY")} </p>
       </ModalBody>
       <ModalFooter>
-        <Button color="danger">Cancel</Button>{" "}
+        <Button
+          color="danger"
+          onClick={() => {
+            cancelClass(schedule);
+          }}
+        >
+          Cancel
+        </Button>{" "}
         <Button color="secondary" onClick={toggle}>
           Close
         </Button>

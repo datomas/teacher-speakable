@@ -128,18 +128,26 @@ class Schedule extends Component {
       : Swal.fire("Hooray", "Classes are now booked", "success");
   };
 
-  // cancelCLass = (selectedClass) => {
-  //   if (selectedClass.status == 'selected') {
-  //     remove(newSchedules, (schedule) = {
-  //       schedule
-  //     })
-  //   }
-  // }
+  cancelCLass = selectedClass => {
+    if (selectedClass.status == "selected") {
+      remove(newSchedules, schedule => {
+        return schedule.id == selectedClass.id;
+      });
+    }
 
-  toggleAddSchedule = () => {
-    this.setState({
-      isModalAddScheduleShown: !this.state.isModalAddScheduleShown
+    const events = [...this.state.events];
+    remove(events, event => {
+      return event.id == selectedClass.id;
     });
+
+    this.setState(
+      {
+        events
+      },
+      () => {
+        this.toggleScheduleDetails();
+      }
+    );
   };
 
   toggleScheduleDetails = () => {
@@ -151,6 +159,7 @@ class Schedule extends Component {
 
   render() {
     console.log(this.props);
+    console.log(this.cancelCLass, "CANCEL");
     const {
       events,
       userType,
@@ -189,7 +198,7 @@ class Schedule extends Component {
         <ScheduleDetailsModal
           isShown={isScheduleDetailsShown}
           toggle={this.toggleScheduleDetails}
-          cancelCLass={this.cancelCLass}
+          cancelClass={this.cancelCLass}
           schedule={activeSchedule}
         />
       </div>
