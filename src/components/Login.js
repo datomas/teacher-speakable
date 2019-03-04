@@ -17,9 +17,11 @@ import {
 } from "reactstrap";
 import { connect } from 'react-redux';
 import { authenticate } from '../store/actions/user';
+import { Redirect } from 'react-router';
 import "assets/scss/login.scss";
 
 class Login extends Component {
+
   state = {
     isSending: false,
     form: {
@@ -30,7 +32,8 @@ class Login extends Component {
     error: {
       isError: false,
       message: ''
-    }
+    },
+    loggedIn: false
   }
 
   static propTypes = {
@@ -50,7 +53,6 @@ class Login extends Component {
   onSubmit = (e) => {
     e.preventDefault();
     const { form, isSending } = this.state;
-
     if (!isSending) {
       this.setState({
         isSending: true
@@ -59,11 +61,18 @@ class Login extends Component {
         const response = await authenticate(form);
         this.setState({ isSending: false });
         if (!response.success) this.setState({ error: { isError: true, message: response.message } })
+        else this.setState({loggedIn: true})
       });
     }
   }
+
   render() {
-    const { form, isSending, error } = this.state;
+    const { form, isSending, error, loggedIn } = this.state;
+    
+    if (loggedIn === true) {
+      return <Redirect to='/dashboard'/>;
+    }
+
     return (
       <Container className="d-flex justify-content-center align-items-center">
         <Col sm="12" md={{ size: 6, order: 2 }}>

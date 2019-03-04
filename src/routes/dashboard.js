@@ -2,6 +2,7 @@ import Dashboard from "views/Dashboard.js";
 import UserPage from "views/UserPage.js";
 import Schedule from "views/Schedule.js";
 
+
 const dashRoutes = [
   {
     path: "/dashboard",
