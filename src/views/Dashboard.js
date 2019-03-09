@@ -20,6 +20,7 @@ import {
   dashboardNASDAQChart
 } from "variables/charts.js";
 
+
 class Dashboard extends React.Component {
   render() {
     return (

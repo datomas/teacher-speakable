@@ -1,5 +1,4 @@
-import React, { Component } from 'react';
-import PropTypes from 'prop-types';
+import React, { Component, useState, useEffect } from 'react';
 import {
   Alert,
   Container,
@@ -13,136 +12,134 @@ import {
   Label,
   Input,
   Button
-
 } from "reactstrap";
-import { connect } from 'react-redux';
-import { authenticate } from '../store/actions/user';
 import { Redirect } from 'react-router';
 import "assets/scss/login.scss";
+import { useStore, useActions, thunk } from 'easy-peasy';
 
-class Login extends Component {
+function Login () {
 
-  state = {
-    isSending: false,
-    form: {
-      email: '',
-      password: '',
-      rememberMe: false
-    },
-    error: {
-      isError: false,
-      message: ''
-    },
-    loggedIn: false
+  const [loggedIn, setLoggedIn] = useState(false)
+
+  const [error, setError] = useState({isError: false, message: ''})
+  
+  const [form, setForm] = useState({email: '', password: '', rememberMe: false })
+
+  const [isSending, setIsSending] = useState(false)
+ 
+  const login = useActions(action => action.user.login);
+
+  const saveData = useActions (action => action.user.save)
+
+  const setAuthenticated = useActions(action => action.user.setAuthenticated)
+
+  const auth = useStore(state => state.user.authenticated)
+
+  const userData = useStore(state => state.user.items);
+
+  const inputChange = (e) => {
+    setForm({
+      ...form,
+      [e.target.name]: e.target.value
+    })
   }
 
-  static propTypes = {
-    authenticate: PropTypes.func.isRequired
-  }
+  // useEffect triggers when isSending state has changed
+  useEffect(()=>{
+    if(isSending === true)
+    {
+      (async () => {
+        await login(form).then(
+          (data) => {
+            if(data.success === true){
+              saveData(data.result);
+              setAuthenticated(true);
+            }
+            else{
+              setError({error: data.result, message: data.message})
+            }
+          }
+        );
+      })()
+    }
+  }, [isSending]);
 
-  inputChange = (e) => {
-    const { form } = this.state;
-    this.setState({
-      form: {
-        ...form,
-        [e.target.name]: e.target.value
-      }
-    });
-  }
-
-  onSubmit = (e) => {
+  const onSubmit = (e) => {
     e.preventDefault();
-    const { form, isSending } = this.state;
-    if (!isSending) {
-      this.setState({
-        isSending: true
-      }, async () => {
-        const { authenticate, user } = this.props;
-        const response = await authenticate(form);
-        this.setState({ isSending: false });
-        if (!response.success) this.setState({ error: { isError: true, message: response.message } })
-        else this.setState({loggedIn: true})
-      });
+    if(!isSending)
+    {
+      setIsSending(true)
     }
   }
 
-  render() {
-    const { form, isSending, error, loggedIn } = this.state;
+  if(auth === true)
+  {
+    // console.log(userData);
+    // console.log("is authenticated ", auth);
+    return <Redirect to="/entities" />
+  }
     
-    if (loggedIn === true) {
-      return <Redirect to='/dashboard'/>;
-    }
 
-    return (
-      <Container className="d-flex justify-content-center align-items-center">
-        <Col sm="12" md={{ size: 6, order: 2 }}>
-          <Card className="card-user">
+  return <Container className="d-flex justify-content-center align-items-center">
+      <Col sm="12" md={{ size: 6, order: 2 }}>
+        <Card className="card-user">
 
-            <CardHeader>
+          <CardHeader>
+            <Col>
+              <CardTitle>Sign In</CardTitle>
+            </Col>
+          </CardHeader>
+
+          <CardBody>
+            <Form className="form" onSubmit={onSubmit}>
               <Col>
-                <CardTitle>Sign In</CardTitle>
+                <Alert isOpen={error.isError} color="danger">
+                  <b>Error: </b>{error.message}
+                </Alert>
+                <FormGroup>
+                  <Label for="email">Email </Label>
+                  <Input
+                    value={form.email}
+                    type="email"
+                    name="email"
+                    id="email"
+                    placeholder="Email Address"
+                    onChange={inputChange}
+                    />
+                </FormGroup>
               </Col>
-            </CardHeader>
-
-            <CardBody>
-              <Form className="form" onSubmit={this.onSubmit}>
-                <Col>
-                  <Alert isOpen={error.isError} color="danger">
-                    <b>Error: </b>{error.message}
-                  </Alert>
-                  <FormGroup>
-                    <Label for="email">Email </Label>
+              <Col>
+                <FormGroup>
+                  <Label for="password">Password</Label>
+                  <Input
+                    value={form.password}
+                    type="password"
+                    name="password"
+                    id="password"
+                    placeholder="****"
+                    onChange={inputChange}
+                    />
+                </FormGroup>
+              </Col>
+              <Col className="remember-me">
+                <FormGroup>
+                  <Label for="checkbox" check>
                     <Input
-                      value={form.email}
-                      type="email"
-                      name="email"
-                      id="email"
-                      placeholder="Email Address"
-                      onChange={this.inputChange} />
-                  </FormGroup>
-                </Col>
-                <Col>
-                  <FormGroup>
-                    <Label for="password">Password</Label>
-                    <Input
-                      value={form.password}
-                      type="password"
-                      name="password"
-                      id="password"
-                      placeholder="****"
-                      onChange={this.inputChange} />
-                  </FormGroup>
-                </Col>
-                <Col className="remember-me">
-                  <FormGroup>
-                    <Label for="checkbox" check>
-                      <Input
-                        type="checkbox"
-                        name="checkbox"
-                        onClick={() => this.setState({
-                          form: {
-                            ...form,
-                            rememberMe: !form.rememberMe
-                          }
-                        })} />{' '}
-                      Remember Me
-                    </Label>
-                  </FormGroup>
-                </Col>
-                <Col>
-                  <Button disabled={isSending} color="primary">Submit</Button>
-                </Col>
-              </Form>
-            </CardBody>
-          </Card>
-        </Col>
-      </Container>
-    )
-  }
+                      type="checkbox"
+                      name="checkbox"
+                      onClick={() => setForm({rememberMe: !form.rememberMe})} />{' '}
+                    Remember Me
+                  </Label>
+                </FormGroup>
+              </Col>
+              <Col>
+                <Button disabled={isSending} color="primary">Submit</Button>
+              </Col>
+            </Form>
+          </CardBody>
+        </Card>
+      </Col>
+    </Container>
 }
 
-const mapStateToProps = state => ({
-  user: state.user
-});
-
-export default connect(mapStateToProps, { authenticate })(Login);
+export default Login;

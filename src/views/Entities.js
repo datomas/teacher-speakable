@@ -1,5 +1,4 @@
-import React, { useState } from 'react'
-// import FormInputs from '../components/FormInputs'
+import React from 'react'
 import {
   FormGroup,
   Label,
@@ -7,19 +6,14 @@ import {
 } from "reactstrap";
 
 import Button from "../components/CustomButton.js";
-import { useStore, useActions } from 'easy-peasy';
-import user from '../store/reducers/user.js';
-import { AUTHENTICATE_USER } from '../store/constants.js';
-
+import { useStore } from 'easy-peasy';
 
 
 function Entities() {
+  
+  const userData = useStore(state => state.user.items);
 
-  // console.log("pota", );
-  const [providerSelected, setProviderSelected] = useState('student-provider');
-  // const user = useStore('AUTHENTICATE_USER');
-
-  // const data = useStore();
+  // console.log(userData);
 
   const html = <div className="content">
     <div className="calendar-container">
