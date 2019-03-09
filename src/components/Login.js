@@ -19,20 +19,18 @@ import { useStore, useActions, thunk } from 'easy-peasy';
 
 function Login () {
 
-  const [loggedIn, setLoggedIn] = useState(false)
-
   const [error, setError] = useState({isError: false, message: ''})
   
   const [form, setForm] = useState({email: '', password: '', rememberMe: false })
 
   const [isSending, setIsSending] = useState(false)
- 
+  //user actions in model
   const login = useActions(action => action.user.login);
 
   const saveData = useActions (action => action.user.save)
 
   const setAuthenticated = useActions(action => action.user.setAuthenticated)
-
+  //access user data
   const auth = useStore(state => state.user.authenticated)
 
   const userData = useStore(state => state.user.items);
@@ -74,8 +72,7 @@ function Login () {
 
   if(auth === true)
   {
-    // console.log(userData);
-    // console.log("is authenticated ", auth);
+    console.log(userData);
     return <Redirect to="/entities" />
   }
     
