@@ -43,11 +43,11 @@ const model = {
     create: thunk(async(action, form) => {
       const { data } = await Entity.create(form.form, form.token);
       return data;
-    })
+    }),
     update: thunk(async(action, form) => {
       const { data } = await Entity.create(form.form, form.token);
       return data;
-    })
+    }),
     destroy: thunk(async(action, form) => {
       const { data } = await Entity.create(form.form, form.token);
       return data;
