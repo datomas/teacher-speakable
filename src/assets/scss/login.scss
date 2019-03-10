@@ -8,6 +8,10 @@ html {
   background-color: #f4f3ef;
   margin: 0;
   max-width: none;
+  .card-user.card {
+    max-width: 600px;
+    margin: 0 auto;
+  }
 }
 
 .remember-me.col {
