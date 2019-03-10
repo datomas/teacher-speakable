@@ -15,6 +15,7 @@ import "./assets/scss/style.scss";
 
 import indexRoutes from "routes/index.js";
 import model from './model';
+import { PrivateRoute } from "./PrivateRoute";
 
 
 // create a persisting store
@@ -40,9 +41,14 @@ ReactDOM.render(
       <Router history={hist}>
         <Switch>
           {indexRoutes.map((prop, key) => {
-            return (
-              <Route path={prop.path} key={key} component={prop.component} />
-            );
+            if(prop.private === true)
+            {
+              return <PrivateRoute path={prop.path} key={key} component={prop.component} />
+            }else{
+              return (
+                <Route path={prop.path} key={key} component={prop.component} />
+              );  
+            }
           })}
         </Switch>
       </Router>

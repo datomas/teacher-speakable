@@ -72,8 +72,8 @@ function Login () {
 
   if(auth === true)
   {
-    console.log(userData);
-    return <Redirect to="/entities" />
+    // console.log(userData.token);
+    return <Redirect to="/dashboard" />
   }
     
 

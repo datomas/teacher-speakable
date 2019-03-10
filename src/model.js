@@ -17,12 +17,13 @@ const model = {
       });
       return data;
     }),
-    logout: (state, payload)=>{
-      state.items.push([])
+    logout: (state) => {
+      localStorage.removeItem('speakablekey');
       state.authenticated = false;
     },
     save: (state, payload) => {
-      state.items.push(payload);
+      state.items = payload;
+      // state.items.push(payload);
     },
     setAuthenticated: (state, payload) => {
       state.authenticated = payload;
