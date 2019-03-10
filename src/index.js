@@ -44,7 +44,9 @@ ReactDOM.render(
             if(prop.private === true)
             {
               return <PrivateRoute path={prop.path} key={key} component={prop.component} />
-            }else{
+            }
+            else
+            {
               return (
                 <Route path={prop.path} key={key} component={prop.component} />
               );  

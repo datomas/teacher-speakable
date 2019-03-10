@@ -1,29 +1,31 @@
 import RepositoryFactory from './api/RepositoryFactory';
-import { thunk, useDispatch } from 'easy-peasy';
-const API = RepositoryFactory.get('auth');
+import { thunk, useStore } from 'easy-peasy';
+
+const Auth = RepositoryFactory.get('auth');
+const Entity = RepositoryFactory.get('entity');
+// const Auth = RepositoryFactory.get('auth');
 
 
 const model = {
-
   user: {
     authenticated: false,
     items: [],
     login: thunk(async(user, form) => {
       const email = form.email;
       const password = form.password;
-      const { data } = await API.login({
+      const { data } = await Auth.login({
         email,
         password
       });
       return data;
     }),
     logout: (state) => {
-      localStorage.removeItem('speakablekey');
+      state.items = {};
       state.authenticated = false;
     },
     save: (state, payload) => {
       state.items = payload;
-      // state.items.push(payload);
+      state.authenticated = true;
     },
     setAuthenticated: (state, payload) => {
       state.authenticated = payload;
@@ -31,7 +33,25 @@ const model = {
   },
 
   entity: {
-    data: {entity_id: "123123"}
+    data: {entity_id: "123123"},
+    show: thunk(async() => {
+
+    }),
+    index: thunk(async() => {
+
+    }),
+    create: thunk(async(action, form) => {
+      const { data } = await Entity.create(form.form, form.token);
+      return data;
+    })
+    update: thunk(async(action, form) => {
+      const { data } = await Entity.create(form.form, form.token);
+      return data;
+    })
+    destroy: thunk(async(action, form) => {
+      const { data } = await Entity.create(form.form, form.token);
+      return data;
+    })
   }
 }
 

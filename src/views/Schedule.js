@@ -185,6 +185,7 @@ class Schedule extends Component {
   }
 }
 
-const mapStateToProps = state => ({ data: state.dashboard });
+// const mapStateToProps = state => ({ data: state.dashboard });
 
-export default connect(mapStateToProps)(Schedule);
+export default Schedule;
+// export default connect(mapStateToProps)(Schedule);

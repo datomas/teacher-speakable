@@ -5,7 +5,7 @@ import { useStore } from "easy-peasy";
 export const PrivateRoute = ({component: Component, ...rest}) => {
 
   const auth = useStore(state => state.user.authenticated);
-  console.log(auth);
+  // console.log(auth);
   return <Route 
     {...rest}
     render={props => auth ? (

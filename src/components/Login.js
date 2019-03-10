@@ -1,4 +1,4 @@
-import React, { Component, useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   Alert,
   Container,
@@ -15,7 +15,7 @@ import {
 } from "reactstrap";
 import { Redirect } from 'react-router';
 import "assets/scss/login.scss";
-import { useStore, useActions, thunk } from 'easy-peasy';
+import { useStore, useActions } from 'easy-peasy';
 
 function Login () {
 
@@ -33,7 +33,7 @@ function Login () {
   //access user data
   const auth = useStore(state => state.user.authenticated)
 
-  const userData = useStore(state => state.user.items);
+  // const userData = useStore(state => state.user.items);
 
   const inputChange = (e) => {
     setForm({
@@ -54,7 +54,8 @@ function Login () {
               setAuthenticated(true);
             }
             else{
-              setError({error: data.result, message: data.message})
+              setError({error: data.result, message: data.message});
+              setIsSending(false);
             }
           }
         );
@@ -70,11 +71,12 @@ function Login () {
     }
   }
 
+  // when auth is true, we redirect to dashboard
   if(auth === true)
   {
-    // console.log(userData.token);
     return <Redirect to="/dashboard" />
   }
+
     
 
   return <Container className="d-flex justify-content-center align-items-center">

@@ -6,14 +6,38 @@ import {
 } from "reactstrap";
 
 import Button from "../components/CustomButton.js";
-import { useStore } from 'easy-peasy';
+import { useStore, useActions } from 'easy-peasy';
 
 
 function Entities() {
-  
+
   const userData = useStore(state => state.user.items);
 
-  // console.log(userData);
+  const createEntity = useActions(action => action.entity.create);
+
+  const handleSubmit = (event) => {
+    
+    const data = {
+      form:{
+        name: event.target.name.value,
+        prefix: event.target.prefix.value,
+        manage_students: (event.target.provider.value === "student") ? true:false,
+        manage_teachers: (event.target.provider.value === "teacher") ? true:false,
+        default_email: event.target.default_email.value,
+        default_lang: event.target.default_lang.value,
+        default_timezone: event.target.default_timezone.value,
+        managed_by_id: userData.user.entity_id  
+      },
+      token: userData.token.access_token
+    }
+
+    event.preventDefault();
+
+    (async() => {
+      console.log(await createEntity(data, userData));
+    })();
+
+  };
 
   const html = <div className="content">
     <div className="calendar-container">
@@ -68,24 +92,6 @@ function Entities() {
   </div>
   return html;
 }
-
-function handleSubmit(event)
-{
-  const data = {
-    name: event.target.name.value,
-    prefix: event.target.prefix.value,
-    manage_students: (event.target.provider.value === "student") ? true:false,
-    manage_teachers: (event.target.provider.value === "teacher") ? true:false,
-    default_email: event.target.default_email.value,
-    default_lang: event.target.default_lang.value,
-    default_timezone: event.target.default_timezone.value,
-    // managed_by_id: useContext(user.entity_id)
-  }
-
-  event.preventDefault();
-  return "";
-}
-
 
 
 export default Entities
